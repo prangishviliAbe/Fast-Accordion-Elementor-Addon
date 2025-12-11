@@ -21,6 +21,41 @@ class Fast_Accordion_Widget extends \Elementor\Widget_Base {
 		return [ 'general' ];
 	}
 
+	public function get_elementor_templates() {
+		$templates = \Elementor\Plugin::instance()->templates_manager->get_source( 'local' )->get_items(); // Saved Templates
+		
+		// Also fetch Pages built with Elementor
+		$pages = get_posts( [
+			'post_type' => 'page',
+			'post_status' => 'publish',
+			'numberposts' => -1,
+			'meta_key' => '_elementor_edit_mode',
+			'meta_value' => 'builder',
+		] );
+
+		if ( empty( $templates ) && empty( $pages ) ) {
+			return [];
+		}
+
+		$options = [
+			'0' => '— ' . esc_html__( 'Select', 'fast-accordion' ) . ' —',
+		];
+
+		if ( ! empty( $templates ) ) {
+			foreach ( $templates as $template ) {
+				$options[ $template['template_id'] ] = $template['title'] . ' (' . $template['type'] . ')';
+			}
+		}
+
+		if ( ! empty( $pages ) ) {
+			foreach ( $pages as $page ) {
+				$options[ $page->ID ] = $page->post_title . ' (Page)';
+			}
+		}
+
+		return $options;
+	}
+
 	protected function register_controls() {
 
 		$this->start_controls_section(
@@ -44,12 +79,41 @@ class Fast_Accordion_Widget extends \Elementor\Widget_Base {
 		);
 
 		$repeater->add_control(
+			'content_type',
+			[
+				'label' => esc_html__( 'Content Source', 'fast-accordion' ),
+				'type' => \Elementor\Controls_Manager::SELECT,
+				'default' => 'content',
+				'options' => [
+					'content' => esc_html__( 'Content', 'fast-accordion' ),
+					'template' => esc_html__( 'Elementor Template', 'fast-accordion' ),
+				],
+			]
+		);
+
+		$repeater->add_control(
+			'template_id',
+			[
+				'label' => esc_html__( 'Select Template', 'fast-accordion' ),
+				'type' => \Elementor\Controls_Manager::SELECT,
+				'options' => $this->get_elementor_templates(),
+				'default' => '0',
+				'condition' => [
+					'content_type' => 'template',
+				],
+			]
+		);
+
+		$repeater->add_control(
 			'list_content',
 			[
 				'label' => esc_html__( 'Content', 'fast-accordion' ),
 				'type' => \Elementor\Controls_Manager::WYSIWYG,
 				'default' => esc_html__( 'List Content', 'fast-accordion' ),
 				'show_label' => false,
+				'condition' => [
+					'content_type' => 'content',
+				],
 			]
 		);
 
@@ -393,14 +457,19 @@ class Fast_Accordion_Widget extends \Elementor\Widget_Base {
 			}
 			echo '</div>'; // end grid
 
-			// Display Area
 			echo '<div class="fast-accordion-display-area">';
 			foreach ( $settings['list'] as $index => $item ) {
 				$active_style = ( 0 === $index ) ? 'style="display:block;"' : 'style="display:none;"';
 				echo '<div class="fast-accordion-content-panel" data-index="' . esc_attr( $index ) . '" ' . $active_style . '>';
 				// We keep item-content class for styling consistency
 				echo '<div class="fast-accordion-item-content elementor-repeater-item-' . esc_attr( $item['_id'] ) . '">';
-				echo $item['list_content'];
+				
+				if ( 'template' === $item['content_type'] && ! empty( $item['template_id'] ) ) {
+					echo \Elementor\Plugin::instance()->frontend->get_builder_content_for_display( $item['template_id'] );
+				} else {
+					echo $item['list_content'];
+				}
+
 				echo '</div>';
 				echo '</div>';
 			}
@@ -416,7 +485,17 @@ class Fast_Accordion_Widget extends \Elementor\Widget_Base {
 				echo '<span class="fast-accordion-title">' . esc_html( $item['list_title'] ) . '</span>';
 				echo '<span class="fast-accordion-icon"><span class="icon-plus">+</span><span class="icon-minus">-</span></span>';
 				echo '</div>';
-				echo '<div class="fast-accordion-item-content">' . $item['list_content'] . '</div>';
+				
+				echo '<div class="fast-accordion-item-content">';
+				
+				if ( 'template' === $item['content_type'] && ! empty( $item['template_id'] ) ) {
+					echo \Elementor\Plugin::instance()->frontend->get_builder_content_for_display( $item['template_id'] );
+				} else {
+					echo $item['list_content'];
+				}
+
+				echo '</div>';
+				
 				echo '</div>';
 			}
 			echo '</div>';
