@@ -1,13 +1,15 @@
 # Fast-Accordion-Elementor-Addon
+
 Fast Accordion Elementor Addon is a custom Elementor widget that allows you to create stylish and functional accordion tabs with a blocked layout. Perfect for FAQs, feature lists, and organized content presentation.
+![Fast Accordion Cover](assets/fast_ac.png)
 
 ## Features
 
 - **Block Layout:** Unique blocked design for accordion items.
 - **Customizable Styles:**
-    - **Colors:** Easily change background and text colors for both default and active states.
-    - **Typography:** Full control over font family, size, weight, and more.
-    - **Spacing:** Adjust padding and margins to fit your design.
+  - **Colors:** Easily change background and text colors for both default and active states.
+  - **Typography:** Full control over font family, size, weight, and more.
+  - **Spacing:** Adjust padding and margins to fit your design.
 - **Responsive:** fully responsive and looks great on all devices.
 - **Easy to Use:** Integrated seamlessly into the Elementor interface.
 
@@ -30,4 +32,3 @@ Fast Accordion Elementor Addon is a custom Elementor widget that allows you to c
 - WordPress 5.0 or higher
 - Elementor 3.0 or higher
 - PHP 7.4 or higher
-
