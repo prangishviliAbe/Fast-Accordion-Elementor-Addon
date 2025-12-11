@@ -1,8 +1,8 @@
 <?php
 /**
  * Plugin Name: Fast Accordion Elementor Addon
- * Description: Custom Elementor widget for Blocked Accordion Tabs.
- * Version: 1.0.1
+ * Description: Custom Elementor widget for Blocked Accordion Tabs with support for dynamic templates.
+ * Version: 1.0.2
  * Author: Abe Prangishvili
  * Text Domain: fast-accordion
  */

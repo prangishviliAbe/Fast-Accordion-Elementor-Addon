@@ -1,7 +1,11 @@
 # Fast-Accordion-Elementor-Addon
 
-Fast Accordion Elementor Addon is a custom Elementor widget that allows you to create stylish and functional accordion tabs with a blocked layout. Perfect for FAQs, feature lists, and organized content presentation.
+Fast Accordion Elementor Addon is a custom Elementor widget that allows you to create stylish and functional accordion tabs with a blocked layout, including support for dynamic templates. Perfect for FAQs, feature lists, and organized content presentation.
 ![Fast Accordion Cover](assets/fast_ac.png)
+
+## Version
+
+1.0.2
 
 ## Features
 
