@@ -351,6 +351,15 @@ class Fast_Accordion_Widget extends \Elementor\Widget_Base {
 			]
 		);
 
+		$this->add_group_control(
+			\Elementor\Group_Control_Border::get_type(),
+			[
+				'name' => 'content_border',
+				'label' => esc_html__( 'Border', 'fast-accordion' ),
+				'selector' => '{{WRAPPER}} .fast-accordion-item-content',
+			]
+		);
+
 		$this->end_controls_section();
 
 	}
@@ -368,14 +377,19 @@ class Fast_Accordion_Widget extends \Elementor\Widget_Base {
 			// render as Grid of Headers + External Content Area
 			echo '<div class="fast-accordion-wrapper fast-accordion-layout-external">';
 			
-			// Grid of Headers
+			// Grid of Headers - Use same class as wrapper if we want same grid behavior, or specific grid class
+			// The user wants "side by side", which is handled by .fast-accordion-wrapper CSS (display:grid).
+			// So we use .fast-accordion-grid but ensure it inherits grid props or is styled same.
 			echo '<div class="fast-accordion-grid">';
 			foreach ( $settings['list'] as $index => $item ) {
 				$active_class = ( 0 === $index ) ? 'active' : '';
-				echo '<div class="fast-accordion-item-header fast-accordion-block elementor-repeater-item-' . esc_attr( $item['_id'] ) . ' ' . $active_class . '" data-index="' . esc_attr( $index ) . '">';
+				// Wrap in .fast-accordion-item to get the item border/radius/margin styles
+				echo '<div class="fast-accordion-item fast-accordion-block ' . $active_class . '" data-index="' . esc_attr( $index ) . '">';
+				echo '<div class="fast-accordion-item-header" data-index="' . esc_attr( $index ) . '">'; // Add data-index here too for safety
 				echo '<span class="fast-accordion-title">' . esc_html( $item['list_title'] ) . '</span>';
 				echo '<span class="fast-accordion-icon"><span class="icon-plus">+</span><span class="icon-minus">-</span></span>';
-				echo '</div>';
+				echo '</div>'; // end header
+				echo '</div>'; // end item
 			}
 			echo '</div>'; // end grid
 
@@ -384,6 +398,7 @@ class Fast_Accordion_Widget extends \Elementor\Widget_Base {
 			foreach ( $settings['list'] as $index => $item ) {
 				$active_style = ( 0 === $index ) ? 'style="display:block;"' : 'style="display:none;"';
 				echo '<div class="fast-accordion-content-panel" data-index="' . esc_attr( $index ) . '" ' . $active_style . '>';
+				// We keep item-content class for styling consistency
 				echo '<div class="fast-accordion-item-content elementor-repeater-item-' . esc_attr( $item['_id'] ) . '">';
 				echo $item['list_content'];
 				echo '</div>';
@@ -405,6 +420,72 @@ class Fast_Accordion_Widget extends \Elementor\Widget_Base {
 				echo '</div>';
 			}
 			echo '</div>';
+			echo '</div>';
+			echo '</div>';
 		}
+		?>
+		<style>
+			/* Inline styles to bypass cache and ensure visibility */
+			.fast-accordion-wrapper.fast-accordion-layout-external {
+				display: block !important;
+			}
+			.fast-accordion-layout-external .fast-accordion-grid {
+				display: grid;
+				grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+				gap: 15px;
+				margin-bottom: 20px;
+			}
+			.fast-accordion-content-panel .fast-accordion-item-content {
+				display: block !important; /* Force visible inside panel */
+			}
+		</style>
+		<script>
+		jQuery(document).ready(function($) {
+			console.log('Fast Accordion: Inline Script Ready');
+			// Use event delegation to handle dynamic loading (Elementor/AJAX)
+			$(document).off('click.fastAccordion').on('click.fastAccordion', '.fast-accordion-item-header', function(e) {
+				console.log('Fast Accordion: Header Clicked');
+				// e.preventDefault(); // Optional, depending on if it's a link or not. Safe to omit for divs.
+				
+				var $header = $(this);
+				var $externalWrapper = $header.closest('.fast-accordion-layout-external');
+
+				if ($externalWrapper.length > 0) {
+					// External Layout Logic
+					console.log('Fast Accordion: External Layout Detected');
+					var index = $header.attr('data-index');
+					if (typeof index === 'undefined' || index === false) {
+						index = $header.closest('.fast-accordion-item').attr('data-index');
+					}
+					console.log('Fast Accordion: Index ' + index);
+
+					// Toggle Styles
+					$externalWrapper.find('.fast-accordion-item').removeClass('active');
+					$header.closest('.fast-accordion-item').addClass('active');
+					
+					$externalWrapper.find('.fast-accordion-item-header').removeClass('active');
+					$header.addClass('active');
+
+					// Toggle Content
+					$externalWrapper.find('.fast-accordion-content-panel').hide();
+					var $panel = $externalWrapper.find('.fast-accordion-content-panel[data-index="' + index + '"]');
+					if ($panel.length) {
+						$panel.stop(true, true).fadeIn(300);
+					} else {
+						console.log('Fast Accordion: No panel found for index ' + index);
+					}
+
+				} else {
+					// Accordion Layout Logic
+					console.log('Fast Accordion: Accordion Layout');
+					var $item = $header.closest('.fast-accordion-item');
+					var $content = $item.find('.fast-accordion-item-content');
+					$content.slideToggle();
+					$item.toggleClass('active');
+				}
+			});
+		});
+		</script>
+		<?php
 	}
 }

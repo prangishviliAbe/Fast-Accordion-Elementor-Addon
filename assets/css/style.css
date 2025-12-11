@@ -83,8 +83,14 @@
 /* If the user wants just one block per widget, this grid will still work (1 item fills). */
 
 /* External Layout Styles */
+.fast-accordion-wrapper.fast-accordion-layout-external {
+    display: block;
+    /* Override default grid to stack the inner grid and content */
+}
+
 .fast-accordion-layout-external .fast-accordion-grid {
     display: grid;
+
     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
     gap: 15px;
     margin-bottom: 20px;
