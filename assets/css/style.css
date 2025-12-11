@@ -1,0 +1,127 @@
+.fast-accordion-wrapper {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    /* Space between blocks */
+}
+
+.fast-accordion-item {
+    width: 100%;
+    margin-bottom: 5px;
+    border: 1px solid transparent;
+}
+
+/* If the design is grid like 3 columns, we can adjust here or via Elementor columns. 
+   BUT based on screenshot, they look like full width or maybe 33% depending on layout. 
+   I'll make them take full width of their container, and the USER can put the widget in a 3-column section in Elementor.
+*/
+
+.fast-accordion-item-header {
+    background-color: blue;
+    /* Fallback default */
+    color: white;
+    padding: 15px 20px;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-weight: bold;
+    transition: background-color 0.3s;
+}
+
+.fast-accordion-item-header:hover {
+    opacity: 0.9;
+}
+
+.fast-accordion-item-content {
+    display: none;
+    /* Hidden by default */
+    padding: 20px;
+    background: #f9f9f9;
+    border: 1px solid #ddd;
+    border-top: none;
+    color: #333;
+}
+
+/* Icons */
+.fast-accordion-icon {
+    font-size: 20px;
+    line-height: 1;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.icon-minus {
+    display: none;
+}
+
+/* Active State */
+.fast-accordion-item.active .fast-accordion-item-header {
+    /* Maybe distinct color for active? - Handled by JS/Elementor now */
+}
+
+.fast-accordion-item.active .icon-plus {
+    display: none;
+}
+
+.fast-accordion-item.active .icon-minus {
+    display: inline-block;
+}
+
+/* Adjust for the grid layout in the screenshot 
+   The screenshot shows 3 items in a row. 
+   The user can achieve this by placing the widget in a 3-column section, OR we can force it here.
+   Let's assume the Repeater items are meant to be a grid.
+*/
+.fast-accordion-wrapper {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 15px;
+}
+
+/* If the user wants just one block per widget, this grid will still work (1 item fills). */
+
+/* External Layout Styles */
+.fast-accordion-layout-external .fast-accordion-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.fast-accordion-layout-external .fast-accordion-block {
+    /* Base styles inherit from .fast-accordion-item-header */
+    /* Ensure they look like blocks even if independent */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    text-align: left;
+    height: 100%;
+    /* Equal height items */
+}
+
+/* Active State for Block in External Layout */
+.fast-accordion-layout-external .fast-accordion-block.active {
+    /* Style handled by Elementor controls usually, but we can enforce some defaults if needed */
+    /* Styles injected by Elementor */
+}
+
+.fast-accordion-display-area {
+    width: 100%;
+    margin-top: 20px;
+    clear: both;
+}
+
+.fast-accordion-content-panel {
+    display: none;
+    /* JS controls visibility */
+    /* Content styling inherits from .fast-accordion-item-content if we use that class inside, 
+       but here we wrap it. Let's ensure the wrapper is clean. */
+}
+
+.fast-accordion-content-panel .fast-accordion-item-content {
+    display: block !important;
+    /* Always visible inside the panel */
+    width: 100%;
+}
