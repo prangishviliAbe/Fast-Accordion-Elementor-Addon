@@ -5,7 +5,7 @@ Fast Accordion Elementor Addon is a custom Elementor widget that allows you to c
 
 ## Version
 
-1.0.6
+1.0.7
 
 ## Features
 
@@ -40,6 +40,9 @@ Fast Accordion Elementor Addon is a custom Elementor widget that allows you to c
 - PHP 7.4 or higher
 
 ## Changelog
+
+### 1.0.7
+- **Fix:** Resolved critical syntax error in widget content rendering.
 
 ### 1.0.6
 - **New:** Added "Close Button" inside content area to collapse active items.

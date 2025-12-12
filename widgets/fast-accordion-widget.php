@@ -543,9 +543,7 @@ class Fast_Accordion_Widget extends \Elementor\Widget_Base {
 					echo $item['list_content'];
 				}
 
-				} else {
-					echo $item['list_content'];
-				}
+
 
 				echo '<div class="fast-accordion-close-btn" title="' . esc_attr__('Close', 'fast-accordion') . '">';
 				\Elementor\Icons_Manager::render_icon( $settings['close_icon'], [ 'aria-hidden' => 'true' ] );
