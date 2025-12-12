@@ -187,10 +187,27 @@ class Fast_Accordion_Widget extends \Elementor\Widget_Base {
 			]
 		);
 
+			]
+		);
+
 		$this->add_control(
-			'animation_type',
+			'open_animation',
 			[
-				'label' => esc_html__( 'Animation', 'fast-accordion' ),
+				'label' => esc_html__( 'Open Animation', 'fast-accordion' ),
+				'type' => \Elementor\Controls_Manager::SELECT,
+				'default' => 'slide',
+				'options' => [
+					'slide' => esc_html__( 'Slide', 'fast-accordion' ),
+					'fade' => esc_html__( 'Fade', 'fast-accordion' ),
+					'none' => esc_html__( 'None', 'fast-accordion' ),
+				],
+			]
+		);
+
+		$this->add_control(
+			'close_animation',
+			[
+				'label' => esc_html__( 'Close Animation', 'fast-accordion' ),
 				'type' => \Elementor\Controls_Manager::SELECT,
 				'default' => 'slide',
 				'options' => [
@@ -545,7 +562,7 @@ class Fast_Accordion_Widget extends \Elementor\Widget_Base {
 
 		if ( 'external' === $layout ) {
 			// render as Grid of Headers + External Content Area
-			echo '<div class="fast-accordion-wrapper fast-accordion-layout-external" data-animation="' . esc_attr( $settings['animation_type'] ) . '">';
+			echo '<div class="fast-accordion-wrapper fast-accordion-layout-external" data-anim-open="' . esc_attr( $settings['open_animation'] ) . '" data-anim-close="' . esc_attr( $settings['close_animation'] ) . '">';
 			
 			// Grid of Headers - Use same class as wrapper if we want same grid behavior, or specific grid class
 			// The user wants "side by side", which is handled by .fast-accordion-wrapper CSS (display:grid).
@@ -592,7 +609,7 @@ class Fast_Accordion_Widget extends \Elementor\Widget_Base {
 			echo '</div>'; // end wrapper
 		} else {
 			// Default Accordion Logic
-			echo '<div class="fast-accordion-wrapper fast-accordion-layout-accordion" data-animation="' . esc_attr( $settings['animation_type'] ) . '">';
+			echo '<div class="fast-accordion-wrapper fast-accordion-layout-accordion" data-anim-open="' . esc_attr( $settings['open_animation'] ) . '" data-anim-close="' . esc_attr( $settings['close_animation'] ) . '">';
 			foreach (  $settings['list'] as $index => $item ) {
 				$active_class = ( $active_index === $index ) ? 'active' : '';
 				$active_style = ( $active_index === $index ) ? 'style="display:block;"' : 'style="display:none;"';

@@ -5,7 +5,7 @@ Fast Accordion Elementor Addon is a custom Elementor widget that allows you to c
 
 ## Version
 
-1.0.11
+1.0.12
 
 ## Features
 
@@ -18,7 +18,7 @@ Fast Accordion Elementor Addon is a custom Elementor widget that allows you to c
 - **Easy to Use:** Integrated seamlessly into the Elementor interface.
 - **Multiple Content Sources:** Use static content, Elementor Templates, or any WordPress Page.
 - **Close Button:** Integrated close button inside content area with full customization (Icon, Color, Size).
-- **Animations:** Choose between Slide, Fade, or None for opening/closing content.
+- **Animations:** Separate controls for Open and Close animations (Slide, Fade, None).
 - **Active by Default:** Choose which tab should be open when the page loads.
 
 ## Installation
@@ -42,6 +42,9 @@ Fast Accordion Elementor Addon is a custom Elementor widget that allows you to c
 - PHP 7.4 or higher
 
 ## Changelog
+
+### 1.0.12
+- **New:** Separated Animation control into distinct "Open Animation" and "Close Animation" settings.
 
 ### 1.0.11
 - **New:** Added "Active by Default" switcher to accordion items.

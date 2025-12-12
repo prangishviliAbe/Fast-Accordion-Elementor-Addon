@@ -6,25 +6,24 @@ jQuery(document).ready(function ($) {
 
         var $header = $(this);
         var $wrapper = $header.closest('.fast-accordion-wrapper');
-        var animation = $wrapper.data('animation') || 'slide'; // Default to slide if not set
+        var animOpen = $wrapper.data('anim-open') || 'slide';
+        var animClose = $wrapper.data('anim-close') || 'slide';
 
         // Check if we are in External Layout mode
         var $externalWrapper = $header.closest('.fast-accordion-layout-external');
 
         if ($externalWrapper.length > 0) {
-            console.log('Fast Accordion: External Layout Clicked. Animation: ', animation);
+            console.log('Fast Accordion: External Layout Clicked. Open:', animOpen, 'Close:', animClose);
 
-            // Robust index retrieval
             var index = $header.attr('data-index');
             if (typeof index === 'undefined' || index === false) {
                 index = $header.closest('.fast-accordion-item').attr('data-index');
             }
 
-            // Toggle Active Class on Items
+            // Toggle Active Class
             $externalWrapper.find('.fast-accordion-item').removeClass('active');
             $header.closest('.fast-accordion-item').addClass('active');
 
-            // Toggle Active Class on Header itself
             $externalWrapper.find('.fast-accordion-item-header').removeClass('active');
             $header.addClass('active');
 
@@ -36,37 +35,63 @@ jQuery(document).ready(function ($) {
                 return; // Already open
             }
 
-            if (animation === 'fade') {
-                $panels.stop(true, true).fadeOut(200);
-                setTimeout(function () {
-                    if ($targetPanel.length > 0) $targetPanel.stop(true, true).fadeIn(300);
-                }, 200); // Wait for fade out
-            } else if (animation === 'none') {
-                $panels.hide();
-                if ($targetPanel.length > 0) $targetPanel.show();
-            } else {
-                // True Slide Animation
-                $panels.stop(true, true).not($targetPanel).slideUp(300);
-                if ($targetPanel.length > 0) $targetPanel.stop(true, true).slideDown(300);
+            // Close others
+            var $visiblePanels = $panels.filter(':visible');
+            if ($visiblePanels.length > 0) {
+                if (animClose === 'fade') {
+                    $visiblePanels.stop(true, true).fadeOut(200);
+                } else if (animClose === 'none') {
+                    $visiblePanels.hide();
+                } else { // slide
+                    $visiblePanels.stop(true, true).slideUp(300);
+                }
             }
+
+            // Open target
+            // Use small timeout if fading out to prevent overlap clashing, or just run parallel
+            var delay = (animClose === 'fade' && $visiblePanels.length > 0) ? 200 : 0;
+            // Actually, for slideUp/slideDown parallel is fine (accordion effect). Fade needs wait usually.
+
+            setTimeout(function () {
+                if ($targetPanel.length > 0) {
+                    if (animOpen === 'fade') {
+                        $targetPanel.stop(true, true).fadeIn(300);
+                    } else if (animOpen === 'none') {
+                        $targetPanel.show();
+                    } else { // slide
+                        $targetPanel.stop(true, true).slideDown(300);
+                    }
+                }
+            }, delay);
 
         } else {
             // Default Accordion Layout
-            console.log('Fast Accordion: Internal Layout Clicked. Animation: ', animation);
+            console.log('Fast Accordion: Internal Layout Clicked. Open:', animOpen, 'Close:', animClose);
 
             var $item = $header.closest('.fast-accordion-item');
             var $content = $item.find('.fast-accordion-item-content');
+            var isOpen = $item.hasClass('active');
 
-            // Toggle Active Class
             $item.toggleClass('active');
 
-            if (animation === 'fade') {
-                $content.stop(true, true).fadeToggle(300);
-            } else if (animation === 'none') {
-                $content.toggle();
+            if (isOpen) {
+                // Closing
+                if (animClose === 'fade') {
+                    $content.stop(true, true).fadeOut(300);
+                } else if (animClose === 'none') {
+                    $content.hide();
+                } else {
+                    $content.stop(true, true).slideUp(300);
+                }
             } else {
-                // Slide
-                $content.stop(true, true).slideToggle(300);
+                // Opening
+                if (animOpen === 'fade') {
+                    $content.stop(true, true).fadeIn(300);
+                } else if (animOpen === 'none') {
+                    $content.show();
+                } else {
+                    $content.stop(true, true).slideDown(300);
+                }
             }
         }
     });
@@ -76,22 +101,24 @@ jQuery(document).ready(function ($) {
         e.stopPropagation();
         var $btn = $(this);
         var $wrapper = $btn.closest('.fast-accordion-wrapper');
-        var animation = $wrapper.data('animation') || 'slide';
+        var animClose = $wrapper.data('anim-close') || 'slide';
         var $externalWrapper = $btn.closest('.fast-accordion-layout-external');
 
-        console.log('Fast Accordion: Close Button Clicked. Animation: ', animation);
+        console.log('Fast Accordion: Close Button Clicked. Close Animation:', animClose);
 
         if ($externalWrapper.length > 0) {
             // External Layout Close
             $externalWrapper.find('.fast-accordion-item').removeClass('active');
             $externalWrapper.find('.fast-accordion-item-header').removeClass('active');
 
-            if (animation === 'fade') {
-                $externalWrapper.find('.fast-accordion-content-panel').fadeOut(300);
-            } else if (animation === 'none') {
-                $externalWrapper.find('.fast-accordion-content-panel').hide();
+            var $panel = $externalWrapper.find('.fast-accordion-content-panel');
+
+            if (animClose === 'fade') {
+                $panel.fadeOut(300);
+            } else if (animClose === 'none') {
+                $panel.hide();
             } else {
-                $externalWrapper.find('.fast-accordion-content-panel').slideUp(300);
+                $panel.slideUp(300);
             }
 
         } else {
@@ -100,9 +127,9 @@ jQuery(document).ready(function ($) {
             var $item = $content.closest('.fast-accordion-item');
             $item.removeClass('active');
 
-            if (animation === 'fade') {
+            if (animClose === 'fade') {
                 $content.fadeOut(300);
-            } else if (animation === 'none') {
+            } else if (animClose === 'none') {
                 $content.hide();
             } else {
                 $content.slideUp(300);
