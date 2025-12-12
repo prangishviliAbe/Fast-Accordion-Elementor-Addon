@@ -5,7 +5,7 @@ Fast Accordion Elementor Addon is a custom Elementor widget that allows you to c
 
 ## Version
 
-1.0.15
+1.0.16
 
 ## Features
 
@@ -43,7 +43,13 @@ Fast Accordion Elementor Addon is a custom Elementor widget that allows you to c
 
 ## Changelog
 
+### 1.0.16
+- **Fix:** Smoothed out animation interruptions to prevent "jumping" when toggling rapidly.
+
 ### 1.0.15
+- **Fix:** Enabled toggling (collapsing) of active items in External layout when clicking the header.
+
+### 1.0.14
 - **Fix:** Enabled toggling (collapsing) of active items in External layout when clicking the header.
 
 ### 1.0.14

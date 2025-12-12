@@ -32,11 +32,11 @@ jQuery(document).ready(function ($) {
 
                 // Animate Close
                 if (animClose === 'fade') {
-                    $targetPanel.stop(true, true).fadeOut(300);
+                    $targetPanel.stop(true).fadeOut(300);
                 } else if (animClose === 'none') {
                     $targetPanel.hide();
                 } else { // slide
-                    $targetPanel.stop(true, true).slideUp(300);
+                    $targetPanel.stop(true).slideUp(300);
                 }
                 return; // Done
             }
@@ -55,11 +55,11 @@ jQuery(document).ready(function ($) {
             var $visiblePanels = $panels.filter(':visible');
             if ($visiblePanels.length > 0) {
                 if (animClose === 'fade') {
-                    $visiblePanels.stop(true, true).fadeOut(200);
+                    $visiblePanels.stop(true).fadeOut(200);
                 } else if (animClose === 'none') {
                     $visiblePanels.hide();
                 } else { // slide
-                    $visiblePanels.stop(true, true).slideUp(300);
+                    $visiblePanels.stop(true).slideUp(300);
                 }
             }
 
@@ -74,11 +74,11 @@ jQuery(document).ready(function ($) {
             setTimeout(function () {
                 if ($targetPanel.length > 0) {
                     if (animOpen === 'fade') {
-                        $targetPanel.stop(true, true).fadeIn(300);
+                        $targetPanel.stop(true).fadeIn(300);
                     } else if (animOpen === 'none') {
                         $targetPanel.show();
                     } else { // slide
-                        $targetPanel.stop(true, true).slideDown(300);
+                        $targetPanel.stop(true).slideDown(300);
                     }
                 }
             }, delay);
@@ -96,20 +96,20 @@ jQuery(document).ready(function ($) {
             if (isOpen) {
                 // Closing
                 if (animClose === 'fade') {
-                    $content.stop(true, true).fadeOut(300);
+                    $content.stop(true).fadeOut(300);
                 } else if (animClose === 'none') {
                     $content.hide();
                 } else {
-                    $content.stop(true, true).slideUp(300);
+                    $content.stop(true).slideUp(300);
                 }
             } else {
                 // Opening
                 if (animOpen === 'fade') {
-                    $content.stop(true, true).fadeIn(300);
+                    $content.stop(true).fadeIn(300);
                 } else if (animOpen === 'none') {
                     $content.show();
                 } else {
-                    $content.stop(true, true).slideDown(300);
+                    $content.stop(true).slideDown(300);
                 }
             }
         }
