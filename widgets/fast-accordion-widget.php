@@ -187,8 +187,7 @@ class Fast_Accordion_Widget extends \Elementor\Widget_Base {
 			]
 		);
 
-			]
-		);
+
 
 		$this->add_control(
 			'open_animation',
