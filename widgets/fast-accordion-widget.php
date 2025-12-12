@@ -510,7 +510,7 @@ class Fast_Accordion_Widget extends \Elementor\Widget_Base {
 
 		if ( 'external' === $layout ) {
 			// render as Grid of Headers + External Content Area
-			echo '<div class="fast-accordion-wrapper fast-accordion-layout-external">';
+			echo '<div class="fast-accordion-wrapper fast-accordion-layout-external" data-animation="' . esc_attr( $settings['animation_type'] ) . '">';
 			
 			// Grid of Headers - Use same class as wrapper if we want same grid behavior, or specific grid class
 			// The user wants "side by side", which is handled by .fast-accordion-wrapper CSS (display:grid).
@@ -557,7 +557,7 @@ class Fast_Accordion_Widget extends \Elementor\Widget_Base {
 			echo '</div>'; // end wrapper
 		} else {
 			// Default Accordion Logic
-			echo '<div class="fast-accordion-wrapper fast-accordion-layout-accordion">';
+			echo '<div class="fast-accordion-wrapper fast-accordion-layout-accordion" data-animation="' . esc_attr( $settings['animation_type'] ) . '">';
 			foreach (  $settings['list'] as $item ) {
 				echo '<div class="fast-accordion-item elementor-repeater-item-' . esc_attr( $item['_id'] ) . '">';
 				echo '<div class="fast-accordion-item-header">';
