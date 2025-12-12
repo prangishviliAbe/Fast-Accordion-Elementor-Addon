@@ -21,19 +21,10 @@ class Fast_Accordion_Widget extends \Elementor\Widget_Base {
 		return [ 'general' ];
 	}
 
-	public function get_elementor_templates() {
+	public function get_saved_templates() {
 		$templates = \Elementor\Plugin::instance()->templates_manager->get_source( 'local' )->get_items(); // Saved Templates
 		
-		// Also fetch Pages built with Elementor
-		$pages = get_posts( [
-			'post_type' => 'page',
-			'post_status' => 'publish',
-			'numberposts' => -1,
-			'meta_key' => '_elementor_edit_mode',
-			'meta_value' => 'builder',
-		] );
-
-		if ( empty( $templates ) && empty( $pages ) ) {
+		if ( empty( $templates ) ) {
 			return [];
 		}
 
@@ -41,19 +32,38 @@ class Fast_Accordion_Widget extends \Elementor\Widget_Base {
 			'0' => '— ' . esc_html__( 'Select', 'fast-accordion' ) . ' —',
 		];
 
-		if ( ! empty( $templates ) ) {
-			foreach ( $templates as $template ) {
-				$options[ $template['template_id'] ] = $template['title'] . ' (' . $template['type'] . ')';
-			}
-		}
-
-		if ( ! empty( $pages ) ) {
-			foreach ( $pages as $page ) {
-				$options[ $page->ID ] = $page->post_title . ' (Page)';
-			}
+		foreach ( $templates as $template ) {
+			$options[ $template['template_id'] ] = $template['title'] . ' (' . $template['type'] . ')';
 		}
 
 		return $options;
+	}
+
+	public function get_elementor_pages() {
+		$pages = get_posts( [
+			'post_type' => 'page',
+			'post_status' => 'publish',
+			'numberposts' => -1,
+		] );
+
+		if ( empty( $pages ) ) {
+			return [];
+		}
+
+		$options = [
+			'0' => '— ' . esc_html__( 'Select', 'fast-accordion' ) . ' —',
+		];
+
+		foreach ( $pages as $page ) {
+			$options[ $page->ID ] = $page->post_title;
+		}
+
+		return $options;
+	}
+
+	// kept for backward compatibility if needed, though unused in new controls
+	public function get_elementor_templates() {
+		return $this->get_saved_templates();
 	}
 
 	protected function register_controls() {
@@ -84,9 +94,10 @@ class Fast_Accordion_Widget extends \Elementor\Widget_Base {
 				'label' => esc_html__( 'Content Source', 'fast-accordion' ),
 				'type' => \Elementor\Controls_Manager::SELECT,
 				'default' => 'content',
-				'options' => [
+			'options' => [
 					'content' => esc_html__( 'Content', 'fast-accordion' ),
 					'template' => esc_html__( 'Elementor Template', 'fast-accordion' ),
+					'page' => esc_html__( 'Page', 'fast-accordion' ),
 				],
 			]
 		);
@@ -96,10 +107,23 @@ class Fast_Accordion_Widget extends \Elementor\Widget_Base {
 			[
 				'label' => esc_html__( 'Select Template', 'fast-accordion' ),
 				'type' => \Elementor\Controls_Manager::SELECT,
-				'options' => $this->get_elementor_templates(),
+				'options' => $this->get_saved_templates(),
 				'default' => '0',
 				'condition' => [
 					'content_type' => 'template',
+				],
+			]
+		);
+
+		$repeater->add_control(
+			'page_id',
+			[
+				'label' => esc_html__( 'Select Page', 'fast-accordion' ),
+				'type' => \Elementor\Controls_Manager::SELECT,
+				'options' => $this->get_elementor_pages(),
+				'default' => '0',
+				'condition' => [
+					'content_type' => 'page',
 				],
 			]
 		);
@@ -466,6 +490,8 @@ class Fast_Accordion_Widget extends \Elementor\Widget_Base {
 				
 				if ( 'template' === $item['content_type'] && ! empty( $item['template_id'] ) ) {
 					echo \Elementor\Plugin::instance()->frontend->get_builder_content_for_display( $item['template_id'] );
+				} elseif ( 'page' === $item['content_type'] && ! empty( $item['page_id'] ) ) {
+					echo \Elementor\Plugin::instance()->frontend->get_builder_content_for_display( $item['page_id'] );
 				} else {
 					echo $item['list_content'];
 				}
@@ -490,6 +516,8 @@ class Fast_Accordion_Widget extends \Elementor\Widget_Base {
 				
 				if ( 'template' === $item['content_type'] && ! empty( $item['template_id'] ) ) {
 					echo \Elementor\Plugin::instance()->frontend->get_builder_content_for_display( $item['template_id'] );
+				} elseif ( 'page' === $item['content_type'] && ! empty( $item['page_id'] ) ) {
+					echo \Elementor\Plugin::instance()->frontend->get_builder_content_for_display( $item['page_id'] );
 				} else {
 					echo $item['list_content'];
 				}

@@ -5,7 +5,7 @@ Fast Accordion Elementor Addon is a custom Elementor widget that allows you to c
 
 ## Version
 
-1.0.4
+1.0.5
 
 ## Features
 
@@ -16,6 +16,7 @@ Fast Accordion Elementor Addon is a custom Elementor widget that allows you to c
   - **Spacing:** Adjust padding and margins to fit your design.
 - **Responsive:** fully responsive and looks great on all devices.
 - **Easy to Use:** Integrated seamlessly into the Elementor interface.
+- **Multiple Content Sources:** Use static content, Elementor Templates, or any WordPress Page.
 
 ## Installation
 
@@ -38,6 +39,10 @@ Fast Accordion Elementor Addon is a custom Elementor widget that allows you to c
 - PHP 7.4 or higher
 
 ## Changelog
+
+### 1.0.5
+- **New:** Added "Page" content source to include any WordPress Page in accordion tabs.
+- **Improvement:** Separated "Templates" and "Pages" into distinct selection controls.
 
 ### 1.0.4
 - **Fix:** Fixed External layout styling to ensure items are responsive.
