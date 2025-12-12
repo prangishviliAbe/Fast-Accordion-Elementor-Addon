@@ -45,17 +45,9 @@ jQuery(document).ready(function ($) {
                 $panels.hide();
                 if ($targetPanel.length > 0) $targetPanel.show();
             } else {
-                // Default Slide
-                $panels.hide(); // External usually fades or shows. Sliding horizontal external items is tricky, let's stick to FadeIn for Slide mode simply or Fade.
-                // Actually, for External, standard 'slide' might behave like 'fade' because they are absolute/grid positioned often. 
-                // Let's use FadeIn for 'slide' equivalent in external to be smooth, or 'slideDown' if they were stacked.
-                // Given user request "Animation Options", let's try to map them meaningfully.
-                // For External, 'Slide' is often just showing it. Let's use Fade for smoother 'Slide' feel unless we want to slide down.
-
-                // Let's implement actual jQuery slideUp/Down logic if possible, but since they occupy same space (often), fade is safer.
-                // BUT, user asked for "Slide". Let's try standard behavior:
-                $panels.stop(true, true).hide();
-                if ($targetPanel.length > 0) $targetPanel.stop(true, true).fadeIn(300);
+                // True Slide Animation
+                $panels.stop(true, true).not($targetPanel).slideUp(300);
+                if ($targetPanel.length > 0) $targetPanel.stop(true, true).slideDown(300);
             }
 
         } else {
@@ -99,7 +91,7 @@ jQuery(document).ready(function ($) {
             } else if (animation === 'none') {
                 $externalWrapper.find('.fast-accordion-content-panel').hide();
             } else {
-                $externalWrapper.find('.fast-accordion-content-panel').fadeOut(300); // Fallback to fade for external
+                $externalWrapper.find('.fast-accordion-content-panel').slideUp(300);
             }
 
         } else {

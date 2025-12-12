@@ -175,6 +175,20 @@ class Fast_Accordion_Widget extends \Elementor\Widget_Base {
 			]
 		);
 
+		$this->add_control(
+			'animation_type',
+			[
+				'label' => esc_html__( 'Animation', 'fast-accordion' ),
+				'type' => \Elementor\Controls_Manager::SELECT,
+				'default' => 'slide',
+				'options' => [
+					'slide' => esc_html__( 'Slide', 'fast-accordion' ),
+					'fade' => esc_html__( 'Fade', 'fast-accordion' ),
+					'none' => esc_html__( 'None', 'fast-accordion' ),
+				],
+			]
+		);
+
 		$this->end_controls_section();
 
 		$this->start_controls_section(
