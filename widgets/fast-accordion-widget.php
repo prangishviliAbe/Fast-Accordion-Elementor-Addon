@@ -141,6 +141,18 @@ class Fast_Accordion_Widget extends \Elementor\Widget_Base {
 			]
 		);
 
+		$repeater->add_control(
+			'is_active_default',
+			[
+				'label' => esc_html__( 'Active by Default', 'fast-accordion' ),
+				'type' => \Elementor\Controls_Manager::SWITCHER,
+				'label_on' => esc_html__( 'Yes', 'fast-accordion' ),
+				'label_off' => esc_html__( 'No', 'fast-accordion' ),
+				'return_value' => 'yes',
+				'default' => '',
+			]
+		);
+
 		$this->add_control(
 			'list',
 			[
@@ -522,6 +534,15 @@ class Fast_Accordion_Widget extends \Elementor\Widget_Base {
 
 		$layout = isset( $settings['layout_type'] ) ? $settings['layout_type'] : 'accordion';
 
+		// Determine Active Index
+		$active_index = 0; // Default to first
+		foreach ( $settings['list'] as $index => $item ) {
+			if ( 'yes' === $item['is_active_default'] ) {
+				$active_index = $index;
+				break; // Stop at first found
+			}
+		}
+
 		if ( 'external' === $layout ) {
 			// render as Grid of Headers + External Content Area
 			echo '<div class="fast-accordion-wrapper fast-accordion-layout-external" data-animation="' . esc_attr( $settings['animation_type'] ) . '">';
@@ -531,7 +552,7 @@ class Fast_Accordion_Widget extends \Elementor\Widget_Base {
 			// So we use .fast-accordion-grid but ensure it inherits grid props or is styled same.
 			echo '<div class="fast-accordion-grid">';
 			foreach ( $settings['list'] as $index => $item ) {
-				$active_class = ( 0 === $index ) ? 'active' : '';
+				$active_class = ( $active_index === $index ) ? 'active' : '';
 				// Wrap in .fast-accordion-item to get the item border/radius/margin styles
 				echo '<div class="fast-accordion-item fast-accordion-block ' . $active_class . '" data-index="' . esc_attr( $index ) . '">';
 				echo '<div class="fast-accordion-item-header" data-index="' . esc_attr( $index ) . '">'; // Add data-index here too for safety
@@ -544,7 +565,7 @@ class Fast_Accordion_Widget extends \Elementor\Widget_Base {
 
 			echo '<div class="fast-accordion-display-area">';
 			foreach ( $settings['list'] as $index => $item ) {
-				$active_style = ( 0 === $index ) ? 'style="display:block;"' : 'style="display:none;"';
+				$active_style = ( $active_index === $index ) ? 'style="display:block;"' : 'style="display:none;"';
 				echo '<div class="fast-accordion-content-panel" data-index="' . esc_attr( $index ) . '" ' . $active_style . '>';
 				// We keep item-content class for styling consistency
 				echo '<div class="fast-accordion-item-content elementor-repeater-item-' . esc_attr( $item['_id'] ) . '">';
@@ -572,14 +593,17 @@ class Fast_Accordion_Widget extends \Elementor\Widget_Base {
 		} else {
 			// Default Accordion Logic
 			echo '<div class="fast-accordion-wrapper fast-accordion-layout-accordion" data-animation="' . esc_attr( $settings['animation_type'] ) . '">';
-			foreach (  $settings['list'] as $item ) {
-				echo '<div class="fast-accordion-item elementor-repeater-item-' . esc_attr( $item['_id'] ) . '">';
+			foreach (  $settings['list'] as $index => $item ) {
+				$active_class = ( $active_index === $index ) ? 'active' : '';
+				$active_style = ( $active_index === $index ) ? 'style="display:block;"' : 'style="display:none;"';
+				
+				echo '<div class="fast-accordion-item elementor-repeater-item-' . esc_attr( $item['_id'] ) . ' ' . $active_class . ' ">';
 				echo '<div class="fast-accordion-item-header">';
 				echo '<span class="fast-accordion-title">' . esc_html( $item['list_title'] ) . '</span>';
 				echo '<span class="fast-accordion-icon"><span class="icon-plus">+</span><span class="icon-minus">-</span></span>';
 				echo '</div>';
 				
-				echo '<div class="fast-accordion-item-content">';
+				echo '<div class="fast-accordion-item-content" ' . $active_style . '>';
 				
 				if ( 'template' === $item['content_type'] && ! empty( $item['template_id'] ) ) {
 					echo \Elementor\Plugin::instance()->frontend->get_builder_content_for_display( $item['template_id'] );
