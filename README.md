@@ -5,7 +5,7 @@ Fast Accordion Elementor Addon is a custom Elementor widget that allows you to c
 
 ## Version
 
-1.0.2
+1.0.4
 
 ## Features
 
@@ -36,3 +36,13 @@ Fast Accordion Elementor Addon is a custom Elementor widget that allows you to c
 - WordPress 5.0 or higher
 - Elementor 3.0 or higher
 - PHP 7.4 or higher
+
+## Changelog
+
+### 1.0.4
+- **Fix:** Fixed External layout styling to ensure items are responsive.
+- **New:** Implemented Flexbox layout for External items to fill available space (grow to fit).
+- **Update:** Standardized grid/flex gaps and margins.
+
+### 1.0.2
+- Initial Release features.
