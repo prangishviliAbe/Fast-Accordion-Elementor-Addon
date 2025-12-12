@@ -53,4 +53,26 @@ jQuery(document).ready(function ($) {
             $item.toggleClass('active');
         }
     });
+
+    // Close Button Logic
+    $(document).on('click', '.fast-accordion-close-btn', function (e) {
+        e.stopPropagation(); // Prevent bubbling to header click if nested (unlikely but safe)
+        var $btn = $(this);
+        var $externalWrapper = $btn.closest('.fast-accordion-layout-external');
+
+        console.log('Fast Accordion: Close Button Clicked');
+
+        if ($externalWrapper.length > 0) {
+            // External Layout Close
+            $externalWrapper.find('.fast-accordion-content-panel').fadeOut(300);
+            $externalWrapper.find('.fast-accordion-item').removeClass('active');
+            $externalWrapper.find('.fast-accordion-item-header').removeClass('active');
+        } else {
+            // Accordion Layout Close
+            var $content = $btn.closest('.fast-accordion-item-content');
+            var $item = $content.closest('.fast-accordion-item');
+            $item.removeClass('active');
+            $content.slideUp();
+        }
+    });
 });

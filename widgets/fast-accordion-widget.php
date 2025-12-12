@@ -448,6 +448,53 @@ class Fast_Accordion_Widget extends \Elementor\Widget_Base {
 			]
 		);
 
+	$this->end_controls_section();
+
+		$this->start_controls_section(
+			'section_style_close_button',
+			[
+				'label' => esc_html__( 'Close Button', 'fast-accordion' ),
+				'tab' => \Elementor\Controls_Manager::TAB_STYLE,
+			]
+		);
+
+		$this->add_control(
+			'close_icon',
+			[
+				'label' => esc_html__( 'Icon', 'fast-accordion' ),
+				'type' => \Elementor\Controls_Manager::ICONS,
+				'default' => [
+					'value' => 'fas fa-chevron-up',
+					'library' => 'fa-solid',
+				],
+			]
+		);
+
+		$this->add_control(
+			'close_icon_color',
+			[
+				'label' => esc_html__( 'Color', 'fast-accordion' ),
+				'type' => \Elementor\Controls_Manager::COLOR,
+				'selectors' => [
+					'{{WRAPPER}} .fast-accordion-close-btn' => 'color: {{VALUE}};',
+					'{{WRAPPER}} .fast-accordion-close-btn svg' => 'fill: {{VALUE}};',
+				],
+			]
+		);
+
+		$this->add_responsive_control(
+			'close_icon_size',
+			[
+				'label' => esc_html__( 'Size', 'fast-accordion' ),
+				'type' => \Elementor\Controls_Manager::SLIDER,
+				'size_units' => [ 'px', '%', 'em' ],
+				'selectors' => [
+					'{{WRAPPER}} .fast-accordion-close-btn' => 'font-size: {{SIZE}}{{UNIT}};',
+					'{{WRAPPER}} .fast-accordion-close-btn svg' => 'width: {{SIZE}}{{UNIT}}; height: {{SIZE}}{{UNIT}};',
+				],
+			]
+		);
+
 		$this->end_controls_section();
 
 	}
@@ -496,6 +543,14 @@ class Fast_Accordion_Widget extends \Elementor\Widget_Base {
 					echo $item['list_content'];
 				}
 
+				} else {
+					echo $item['list_content'];
+				}
+
+				echo '<div class="fast-accordion-close-btn" title="' . esc_attr__('Close', 'fast-accordion') . '">';
+				\Elementor\Icons_Manager::render_icon( $settings['close_icon'], [ 'aria-hidden' => 'true' ] );
+				echo '</div>';
+				
 				echo '</div>';
 				echo '</div>';
 			}
@@ -522,6 +577,9 @@ class Fast_Accordion_Widget extends \Elementor\Widget_Base {
 					echo $item['list_content'];
 				}
 
+				echo '<div class="fast-accordion-close-btn" title="' . esc_attr__('Close', 'fast-accordion') . '">';
+				\Elementor\Icons_Manager::render_icon( $settings['close_icon'], [ 'aria-hidden' => 'true' ] );
+				echo '</div>';
 				echo '</div>';
 				
 				echo '</div>';

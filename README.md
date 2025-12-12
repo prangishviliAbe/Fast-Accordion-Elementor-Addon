@@ -5,7 +5,7 @@ Fast Accordion Elementor Addon is a custom Elementor widget that allows you to c
 
 ## Version
 
-1.0.5
+1.0.6
 
 ## Features
 
@@ -17,6 +17,7 @@ Fast Accordion Elementor Addon is a custom Elementor widget that allows you to c
 - **Responsive:** fully responsive and looks great on all devices.
 - **Easy to Use:** Integrated seamlessly into the Elementor interface.
 - **Multiple Content Sources:** Use static content, Elementor Templates, or any WordPress Page.
+- **Close Button:** Integrated close button inside content area with full customization (Icon, Color, Size).
 
 ## Installation
 
@@ -39,6 +40,11 @@ Fast Accordion Elementor Addon is a custom Elementor widget that allows you to c
 - PHP 7.4 or higher
 
 ## Changelog
+
+### 1.0.6
+- **New:** Added "Close Button" inside content area to collapse active items.
+- **New:** Added controls for Close Button customization: Icon, Color, and Size.
+- **Fix:** Switched Close Button rendering to use Elementor Icons Manager for SVG support.
 
 ### 1.0.5
 - **New:** Added "Page" content source to include any WordPress Page in accordion tabs.
