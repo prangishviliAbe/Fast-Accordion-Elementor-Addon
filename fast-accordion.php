@@ -2,7 +2,7 @@
 /**
  * Plugin Name: Fast Accordion Elementor Addon
  * Description: Custom Elementor widget for Blocked Accordion Tabs with support for dynamic templates.
- * Version: 1.0.16
+ * Version: 1.0.18
  * Author: Abe Prangishvili
  * Text Domain: fast-accordion
  */
@@ -30,7 +30,7 @@ function fast_accordion_register_widget( $widgets_manager ) {
 add_action( 'elementor/widgets/register', 'fast_accordion_register_widget' );
 
 function fast_accordion_enqueue_styles() {
-	wp_enqueue_style( 'fast-accordion-style', plugins_url( 'assets/css/style.css', __FILE__ ), array(), '1.0.16' );
-	wp_enqueue_script( 'fast-accordion-script', plugins_url( 'assets/js/script.js', __FILE__ ), array('jquery'), '1.0.16', true );
+	wp_enqueue_style( 'fast-accordion-style', plugins_url( 'assets/css/style.css', __FILE__ ), array(), '1.0.18' );
+	wp_enqueue_script( 'fast-accordion-script', plugins_url( 'assets/js/script.js', __FILE__ ), array('jquery'), '1.0.18', true );
 }
 add_action( 'wp_enqueue_scripts', 'fast_accordion_enqueue_styles' );

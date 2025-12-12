@@ -1,8 +1,8 @@
 jQuery(document).ready(function ($) {
     // alert('Fast Accordion Script Loaded'); // Debug alert to confirm loading
 
-    // Event delegation for dynamically added elements and better reliability
-    $(document).on('click', '.fast-accordion-item-header', function (e) {
+    // Event delegation with unbind to prevent duplicate listeners
+    $(document).off('click', '.fast-accordion-item-header').on('click', '.fast-accordion-item-header', function (e) {
 
         var $header = $(this);
         var $wrapper = $header.closest('.fast-accordion-wrapper');
@@ -24,13 +24,13 @@ jQuery(document).ready(function ($) {
             var $targetPanel = $externalWrapper.find('.fast-accordion-content-panel[data-index="' + index + '"]');
 
             // Start Toggle Logic
-            if ($targetPanel.is(':visible')) {
-                // If it's already visible, we want to CLOSE it (Toggle behavior)
+            if ($header.hasClass('active')) {
+                // If header is active, we should Close
                 // Remove active classes
                 $externalWrapper.find('.fast-accordion-item').removeClass('active');
                 $externalWrapper.find('.fast-accordion-item-header').removeClass('active');
 
-                // Animate Close
+                // Animate Close of the target panel
                 if (animClose === 'fade') {
                     $targetPanel.stop(true).fadeOut(300);
                 } else if (animClose === 'none') {
@@ -52,7 +52,7 @@ jQuery(document).ready(function ($) {
             $header.addClass('active');
 
             // Close others
-            var $visiblePanels = $panels.filter(':visible');
+            var $visiblePanels = $panels.filter(':visible').not($targetPanel);
             if ($visiblePanels.length > 0) {
                 if (animClose === 'fade') {
                     $visiblePanels.stop(true).fadeOut(200);
