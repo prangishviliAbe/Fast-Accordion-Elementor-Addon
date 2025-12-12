@@ -48,9 +48,12 @@ jQuery(document).ready(function ($) {
             }
 
             // Open target
-            // Use small timeout if fading out to prevent overlap clashing, or just run parallel
-            var delay = (animClose === 'fade' && $visiblePanels.length > 0) ? 200 : 0;
-            // Actually, for slideUp/slideDown parallel is fine (accordion effect). Fade needs wait usually.
+            // Use delay to ensure sequential animation for better visual clarity
+            var delay = 0;
+            if ($visiblePanels.length > 0) {
+                if (animClose === 'fade') delay = 200;
+                else if (animClose === 'slide') delay = 300; // Wait for slideUp to finish
+            }
 
             setTimeout(function () {
                 if ($targetPanel.length > 0) {
