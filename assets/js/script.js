@@ -20,20 +20,36 @@ jQuery(document).ready(function ($) {
                 index = $header.closest('.fast-accordion-item').attr('data-index');
             }
 
-            // Toggle Active Class
-            $externalWrapper.find('.fast-accordion-item').removeClass('active');
-            $header.closest('.fast-accordion-item').addClass('active');
-
-            $externalWrapper.find('.fast-accordion-item-header').removeClass('active');
-            $header.addClass('active');
-
-            // Content Visibility Logic
             var $panels = $externalWrapper.find('.fast-accordion-content-panel');
             var $targetPanel = $externalWrapper.find('.fast-accordion-content-panel[data-index="' + index + '"]');
 
+            // Start Toggle Logic
             if ($targetPanel.is(':visible')) {
-                return; // Already open
+                // If it's already visible, we want to CLOSE it (Toggle behavior)
+                // Remove active classes
+                $externalWrapper.find('.fast-accordion-item').removeClass('active');
+                $externalWrapper.find('.fast-accordion-item-header').removeClass('active');
+
+                // Animate Close
+                if (animClose === 'fade') {
+                    $targetPanel.stop(true, true).fadeOut(300);
+                } else if (animClose === 'none') {
+                    $targetPanel.hide();
+                } else { // slide
+                    $targetPanel.stop(true, true).slideUp(300);
+                }
+                return; // Done
             }
+
+            // If we are here, it means we are OPENING a new item
+
+            // Toggle Active Class on Items
+            $externalWrapper.find('.fast-accordion-item').removeClass('active');
+            $header.closest('.fast-accordion-item').addClass('active');
+
+            // Toggle Active Class on Header itself
+            $externalWrapper.find('.fast-accordion-item-header').removeClass('active');
+            $header.addClass('active');
 
             // Close others
             var $visiblePanels = $panels.filter(':visible');
